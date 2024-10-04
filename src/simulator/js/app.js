@@ -22,6 +22,16 @@ import { Range } from 'ace-builds';
 import * as sceneObjs from './sceneObjs.js';
 import { saveAs } from 'file-saver';
 
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('../service-worker.js').then(registration => {
+      console.log('SW registered: ', registration);
+    }).catch(registrationError => {
+      console.log('SW registration failed: ', registrationError);
+    });
+  });
+}
+
 async function startApp() {
   await initializeTranslations();
   updateUIText();

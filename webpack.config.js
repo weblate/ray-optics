@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const { InjectManifest } = require('workbox-webpack-plugin');
 
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
@@ -66,6 +67,12 @@ module.exports = (env, argv) => {
             }
           }
         ]
+      }),
+      new InjectManifest({
+        swSrc: './src/simulator/js/service-worker.js',
+        swDest: 'service-worker.js',
+        exclude: [/\.map$/, /manifest$/, /\.htaccess$/],
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB
       }),
     ],
     cache: {
